@@ -140,13 +140,17 @@ export const GoingLowCarbCalculator = () => {
 					</Button>
 				</Tooltip>
 			</Typography>
-
 			<br />
+
 			<Grid container spacing={2} sx={{ justifyContent: "center" }}>
 				<Grid xs={4}>
 					<Card>
 						<CardContent>
-							<Typography level="body-lg">Correction factor</Typography>
+							<Typography
+								level="body-lg"
+							>
+								Correction factor
+							</Typography>
 							<Typography>
 								1u per{" "}
 								<b>
@@ -231,7 +235,6 @@ export const GoingLowCarbCalculator = () => {
 				</Grid>
 			</Grid>
 			<br />
-
 			<Typography level="h2" textAlign="center">
 				Variables
 			</Typography>
@@ -271,7 +274,6 @@ export const GoingLowCarbCalculator = () => {
 				</Grid>
 			</Grid>
 			<br />
-
 			<Typography level="h2" textAlign="center">
 				Result
 			</Typography>
