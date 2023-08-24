@@ -1,4 +1,3 @@
-import "./App.css";
 import Sheet from "@mui/joy/Sheet";
 import {
 	Box,
