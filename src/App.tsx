@@ -9,9 +9,13 @@ import {
 } from "@mui/joy";
 import GoingLowCarbCalculator from "./GoingLowCarbCalculator";
 import DarkModeButton from "./DarkModeButton";
-import React from "react";
+import React, { useEffect } from "react";
 
 function App() {
+	useEffect(() => {
+		document.title = 'Diabetes Tools';
+	});
+	
 	return (
 		<CssVarsProvider>
 			<Sheet sx={{ width: "100vw", height: "100vh" }}>
