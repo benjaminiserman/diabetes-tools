@@ -1,20 +1,78 @@
 import {
+	Button,
 	Card,
 	CardContent,
 	Grid,
 	Input,
 	Sheet,
+	Tooltip,
 	Typography,
 } from "@mui/joy";
 import React from "react";
+import Cookies from 'universal-cookie';
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 export const GoingLowCarbCalculator = () => {
-	const correctionFactor = 200;
-	const bolusRatio = 25;
-	const targetBloodGlucose = 130;
+	const cookies = new Cookies();
+	const getCookieValueOrSetDefault = (cookieName: string, defaultValue: string) => {
+		const cookieValue = cookies.get(cookieName);
+		if (cookieValue === undefined) {
+			cookies.set(cookieName, defaultValue);
+			return defaultValue;
+		}
+
+		return cookieValue;
+	}
+
+	const defaultCorrectionFactor = 200;
+	const defaultBolusRatio = 25;
+	const defaultTargetBloodGlucose = 130;
+
+	const correctionFactorCookieValue = getCookieValueOrSetDefault(
+		"correctionFactor",
+		defaultCorrectionFactor.toString()
+	) as string;
+	const bolusRatioCookieValue = getCookieValueOrSetDefault(
+		"bolusRatio",
+		defaultBolusRatio.toString()
+	) as string;
+	const targetBloodGlucoseCookieValue = getCookieValueOrSetDefault(
+		"targetBloodGlucose",
+		defaultTargetBloodGlucose.toString()
+	) as string;
+
+	const [correctionFactor, setCorrectionFactor] = React.useState(correctionFactorCookieValue);
+	const [bolusRatio, setBolusRatio] = React.useState(bolusRatioCookieValue);
+	const [targetBloodGlucose, setTargetBloodGlucose] = React.useState(targetBloodGlucoseCookieValue);
 
 	const [insulinOnBoard, setInsulinOnBoard] = React.useState("");
 	const [bloodGlucose, setBloodGlucose] = React.useState("");
+
+	const getNumericValueFromInput = (inputValue: string) =>
+		Number(inputValue === "." ? "0" : inputValue);
+
+	window.onbeforeunload = () => {
+		const getNumericValueOrDefault = (value: string, defaultValue: number) => {
+			if (value === "") {
+				return defaultValue.toString();
+			}
+
+			return getNumericValueFromInput(value).toString();;
+		}
+
+		cookies.set(
+			"correctionFactor",
+			getNumericValueOrDefault(correctionFactor, defaultCorrectionFactor)
+		);
+		cookies.set(
+			"bolusRatio",
+			getNumericValueOrDefault(bolusRatio, defaultBolusRatio)
+		);
+		cookies.set(
+			"targetBloodGlucose",
+			getNumericValueOrDefault(targetBloodGlucose, defaultTargetBloodGlucose)
+		);
+	};
 
 	const handleNumericInput = (
 		input: string,
@@ -36,21 +94,30 @@ export const GoingLowCarbCalculator = () => {
 		setter(textWithoutExtraLeadingZeroes);
 	};
 
-	const getInsulinOnBoard = () =>
-		Number(insulinOnBoard === "." ? "0" : insulinOnBoard);
-	const getBloodGlucose = () =>
-		Number(bloodGlucose === "." ? "0" : bloodGlucose);
-
 	const getGramsNeededToReachTarget = () => {
-		if (insulinOnBoard === "" || bloodGlucose === "") {
+		if (
+			[
+				targetBloodGlucose,
+				bloodGlucose,
+				correctionFactor,
+				insulinOnBoard,
+				bolusRatio,
+			].includes("")
+		) {
 			return "...";
 		}
 
+		const targetBloodGlucoseValue = getNumericValueFromInput(targetBloodGlucose);
+		const bloodGlucoseValue = getNumericValueFromInput(bloodGlucose);
+		const correctionFactorValue = getNumericValueFromInput(correctionFactor);
+		const insulinOnBoardValue = getNumericValueFromInput(insulinOnBoard);
+		const bolusRatioValue = getNumericValueFromInput(bolusRatio);
+
 		const gramsNeeded =
-			((targetBloodGlucose -
-				(getBloodGlucose() - correctionFactor * getInsulinOnBoard())) /
-				correctionFactor) *
-			bolusRatio;
+			((targetBloodGlucoseValue -
+				(bloodGlucoseValue - correctionFactorValue * insulinOnBoardValue)) /
+				correctionFactorValue) *
+			bolusRatioValue;
 
 		return `${Math.round(gramsNeeded)}g`;
 	};
@@ -58,8 +125,22 @@ export const GoingLowCarbCalculator = () => {
 	return (
 		<Sheet>
 			<Typography level="h2" textAlign="center">
-				Constants
+				Long-term Settings
+				<Tooltip title="Reset to Default Settings" variant="plain">
+					<Button
+						variant="plain"
+						sx={{ padding: "10px", margin: "0px 10px" }}
+						onClick={() => {
+							setCorrectionFactor(defaultCorrectionFactor.toString());
+							setBolusRatio(defaultBolusRatio.toString());
+							setTargetBloodGlucose(defaultTargetBloodGlucose.toString());
+						}}
+					>
+						<RestartAltIcon />
+					</Button>
+				</Tooltip>
 			</Typography>
+
 			<br />
 			<Grid container spacing={2} sx={{ justifyContent: "center" }}>
 				<Grid xs={4}>
@@ -67,7 +148,28 @@ export const GoingLowCarbCalculator = () => {
 						<CardContent>
 							<Typography level="body-lg">Correction factor</Typography>
 							<Typography>
-								1u per <b>{correctionFactor}</b> BG
+								1u per{" "}
+								<b>
+									<Input
+										placeholder="..."
+										value={correctionFactor}
+										type="text"
+										size="sm"
+										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+											handleNumericInput(
+												event.target.value,
+												setCorrectionFactor
+											)
+										}
+										sx={{
+											display: "inline-block",
+											minWidth: "3em",
+											maxWidth: "3em",
+											minHeight: "3.5ex",
+										}}
+									/>
+								</b>{" "}
+								BG
 							</Typography>
 						</CardContent>
 					</Card>
@@ -77,7 +179,25 @@ export const GoingLowCarbCalculator = () => {
 						<CardContent>
 							<Typography level="body-lg">Bolus ratio</Typography>
 							<Typography>
-								1u per <b>{bolusRatio}</b>g
+								1u per{" "}
+								<b>
+									<Input
+										placeholder="..."
+										value={bolusRatio}
+										type="text"
+										size="sm"
+										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+											handleNumericInput(event.target.value, setBolusRatio)
+										}
+										sx={{
+											display: "inline-block",
+											minWidth: "2em",
+											maxWidth: "2.5em",
+											minHeight: "3.5ex",
+										}}
+									/>
+								</b>
+								g
 							</Typography>
 						</CardContent>
 					</Card>
@@ -87,7 +207,24 @@ export const GoingLowCarbCalculator = () => {
 						<CardContent>
 							<Typography level="body-lg">Target Blood Glucose</Typography>
 							<Typography>
-								<b>{targetBloodGlucose}</b>
+								<b>
+									<Input
+										placeholder="enter target blood glucose..."
+										value={targetBloodGlucose}
+										type="text"
+										size="sm"
+										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+											handleNumericInput(
+												event.target.value,
+												setTargetBloodGlucose
+											)
+										}
+										sx={{
+											display: "inline-block",
+											minHeight: "3.5ex",
+										}}
+									/>
+								</b>
 							</Typography>
 						</CardContent>
 					</Card>
@@ -106,7 +243,7 @@ export const GoingLowCarbCalculator = () => {
 							<Typography level="body-lg">Insulin On Board</Typography>
 							<Input
 								placeholder="enter IOB..."
-								value={insulinOnBoard ?? ""}
+								value={insulinOnBoard}
 								type="text"
 								size="lg"
 								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -122,7 +259,7 @@ export const GoingLowCarbCalculator = () => {
 							<Typography level="body-lg">Blood Glucose Level</Typography>
 							<Input
 								placeholder="enter BG..."
-								value={bloodGlucose ?? ""}
+								value={bloodGlucose}
 								type="text"
 								size="lg"
 								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
