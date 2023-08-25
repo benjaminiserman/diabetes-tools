@@ -332,6 +332,18 @@ export const GoingLowCarbCalculator = () => {
 				</Grid>
 			</Grid>
 			<br />
+			<Sheet
+				sx={{
+					width: "100%",
+					position: "fixed",
+					bottom: 0,
+				}}
+			>
+				<Typography>
+					Note: The result is based on the inputted numbers only and does not
+					include other factors such as activity level.
+				</Typography>
+			</Sheet>
 		</Sheet>
 	);
 }
