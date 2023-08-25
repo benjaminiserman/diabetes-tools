@@ -11,6 +11,7 @@ import {
 import React from "react";
 import Cookies from 'universal-cookie';
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { HelpIconWithTooltip } from "./HelpIconWithTooltip";
 
 export const GoingLowCarbCalculator = () => {
 	const cookies = new Cookies();
@@ -156,6 +157,9 @@ export const GoingLowCarbCalculator = () => {
 						<CardContent>
 							<Typography
 								level="body-lg"
+								endDecorator={
+									<HelpIconWithTooltip helpText="Correction Factor: The amount your blood glucose level would decrease from one unit of insulin under normal circumstances." />
+								}
 							>
 								Correction factor
 							</Typography>
@@ -189,7 +193,14 @@ export const GoingLowCarbCalculator = () => {
 				<Grid xs={4}>
 					<Card>
 						<CardContent>
-							<Typography level="body-lg">Bolus ratio</Typography>
+							<Typography
+								level="body-lg"
+								endDecorator={
+									<HelpIconWithTooltip helpText="Bolus Ratio: The number of grams of carbs that are metabolized by one unit of insulin under normal circumstances." />
+								}
+							>
+								Bolus ratio
+							</Typography>
 							<Typography>
 								1u per{" "}
 								<b>
@@ -217,11 +228,18 @@ export const GoingLowCarbCalculator = () => {
 				<Grid xs={4}>
 					<Card>
 						<CardContent>
-							<Typography level="body-lg">Target Blood Glucose</Typography>
+							<Typography
+								level="body-lg"
+								endDecorator={
+									<HelpIconWithTooltip helpText="Target Blood Glucose: The desired level of blood glucose to maintain good health while reducing the likelihood of a swing to a dangerously low level." />
+								}
+							>
+								Target BG
+							</Typography>
 							<Typography>
 								<b>
 									<Input
-										placeholder="enter target blood glucose..."
+										placeholder="enter target BG..."
 										value={targetBloodGlucose}
 										type="text"
 										size="sm"
@@ -251,7 +269,14 @@ export const GoingLowCarbCalculator = () => {
 				<Grid xs={4}>
 					<Card>
 						<CardContent>
-							<Typography level="body-lg">Insulin On Board</Typography>
+							<Typography
+								level="body-lg"
+								endDecorator={
+									<HelpIconWithTooltip helpText="Insulin On Board (IOB): The amount of insulin currently in your blood stream as reported by your connected device." />
+								}
+							>
+								IOB
+							</Typography>
 							<Input
 								placeholder="enter IOB..."
 								value={insulinOnBoard}
@@ -267,7 +292,14 @@ export const GoingLowCarbCalculator = () => {
 				<Grid xs={4}>
 					<Card>
 						<CardContent>
-							<Typography level="body-lg">Blood Glucose Level</Typography>
+							<Typography
+								level="body-lg"
+								endDecorator={
+									<HelpIconWithTooltip helpText="Blood Glucose Level (BG): The amount of glucose in your blood stream measured in mg/dl." />
+								}
+							>
+								BG
+							</Typography>
 							<Input
 								placeholder="enter BG..."
 								value={bloodGlucose}
