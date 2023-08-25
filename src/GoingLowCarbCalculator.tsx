@@ -15,6 +15,10 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 export const GoingLowCarbCalculator = () => {
 	const cookies = new Cookies();
 	const getCookieValueOrSetDefault = (cookieName: string, defaultValue: string) => {
+		if (cookies.get('cookieConsent') !== true) {
+			return defaultValue;
+		}
+
 		const cookieValue = cookies.get(cookieName);
 		if (cookieValue === undefined) {
 			cookies.set(cookieName, defaultValue);
@@ -58,6 +62,10 @@ export const GoingLowCarbCalculator = () => {
 			}
 
 			return getNumericValueFromInput(value).toString();;
+		}
+
+		if (cookies.get("cookieConsent") !== true) {
+			return;
 		}
 
 		cookies.set(

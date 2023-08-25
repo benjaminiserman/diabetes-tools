@@ -10,6 +10,7 @@ import {
 import GoingLowCarbCalculator from "./GoingLowCarbCalculator";
 import DarkModeButton from "./DarkModeButton";
 import React from "react";
+import { CookieConsent } from "./CookieConsent";
 
 function App() {
 	return (
@@ -26,6 +27,7 @@ function App() {
 						<GoingLowCarbCalculator />
 					</TabPanel>
 				</Tabs>
+				<CookieConsent />
 			</Sheet>
 		</CssVarsProvider>
 	);
