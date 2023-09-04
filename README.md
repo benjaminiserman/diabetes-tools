@@ -1,5 +1,5 @@
 # Diabetes Tools
-![Downloads](https://img.shields.io/github/downloads/winggar/diabetes-tools/total?style=for-the-badge)
+![Downloads](https://img.shields.io/github/downloads/benjaminiserman/diabetes-tools/total?style=for-the-badge)
 
 A basic webpage that provides a calculator to aid with managing diabetes.
 
