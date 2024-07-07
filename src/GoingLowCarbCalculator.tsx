@@ -140,6 +140,7 @@ export const GoingLowCarbCalculator = () => {
 	};
 
 	return (
+<<<<<<< Updated upstream
 		<Sheet>
 			<Card sx={{ maxWidth: '1000px', margin: 'auto' }}>
 				<Typography level="h2" textAlign="center">
@@ -159,6 +160,26 @@ export const GoingLowCarbCalculator = () => {
 					</Tooltip>
 				</Typography>
 				<br />
+=======
+		<Sheet sx={{ overflowX: 'hidden' }}>
+			<Typography level="h2" textAlign="center">
+				Long-term Settings
+				<Tooltip title="Reset to Default Settings" variant="plain">
+					<Button
+						variant="plain"
+						sx={{ padding: "10px", margin: "0px 10px" }}
+						onClick={() => {
+							setCorrectionFactor(defaultCorrectionFactor.toString());
+							setBolusRatio(defaultBolusRatio.toString());
+							setTargetBloodGlucose(defaultTargetBloodGlucose.toString());
+						}}
+					>
+						<RestartAltIcon />
+					</Button>
+				</Tooltip>
+			</Typography>
+			<br />
+>>>>>>> Stashed changes
 
 				<Grid container spacing={2} sx={{ justifyContent: "center" }}>
 					<Grid xs={4}>
@@ -322,6 +343,7 @@ export const GoingLowCarbCalculator = () => {
 						</Card>
 					</Grid>
 				</Grid>
+<<<<<<< Updated upstream
 				<br />
 				<Typography level="h2" textAlign="center">
 					Result
@@ -339,6 +361,42 @@ export const GoingLowCarbCalculator = () => {
 							</CardContent>
 						</Card>
 					</Grid>
+=======
+				<Grid xs={4}>
+					<Card>
+						<CardContent>
+							<Typography
+								level="body-lg"
+								endDecorator={
+									<HelpIconWithTooltip helpText="Target Blood Glucose: The desired level of blood glucose to maintain good health while reducing the likelihood of a swing to a dangerously low level." />
+								}
+							>
+								Target BG
+							</Typography>
+							<Typography>
+								<b>
+									<Input
+										placeholder="enter target BG..."
+										value={targetBloodGlucose}
+										type="text"
+										size="sm"
+										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+											handleNumericInput(
+												event.target.value,
+												setTargetBloodGlucose
+											)
+										}
+										sx={{
+											display: "inline-block",
+											minHeight: "3.5ex",
+											maxWidth: "5em"
+										}}
+									/>
+								</b>
+							</Typography>
+						</CardContent>
+					</Card>
+>>>>>>> Stashed changes
 				</Grid>
 			</Card>
 			<br />
