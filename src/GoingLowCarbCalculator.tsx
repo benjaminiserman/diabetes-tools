@@ -9,14 +9,17 @@ import {
 	Typography,
 } from "@mui/joy";
 import React from "react";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { HelpIconWithTooltip } from "./HelpIconWithTooltip";
 
 export const GoingLowCarbCalculator = () => {
 	const cookies = new Cookies();
-	const getCookieValueOrSetDefault = (cookieName: string, defaultValue: string) => {
-		if (cookies.get('cookieConsent') !== true) {
+	const getCookieValueOrSetDefault = (
+		cookieName: string,
+		defaultValue: string
+	) => {
+		if (cookies.get("cookieConsent") !== true) {
 			return defaultValue;
 		}
 
@@ -27,7 +30,7 @@ export const GoingLowCarbCalculator = () => {
 		}
 
 		return cookieValue;
-	}
+	};
 
 	const defaultCorrectionFactor = 200;
 	const defaultBolusRatio = 25;
@@ -46,9 +49,13 @@ export const GoingLowCarbCalculator = () => {
 		defaultTargetBloodGlucose.toString()
 	) as string;
 
-	const [correctionFactor, setCorrectionFactor] = React.useState(correctionFactorCookieValue);
+	const [correctionFactor, setCorrectionFactor] = React.useState(
+		correctionFactorCookieValue
+	);
 	const [bolusRatio, setBolusRatio] = React.useState(bolusRatioCookieValue);
-	const [targetBloodGlucose, setTargetBloodGlucose] = React.useState(targetBloodGlucoseCookieValue);
+	const [targetBloodGlucose, setTargetBloodGlucose] = React.useState(
+		targetBloodGlucoseCookieValue
+	);
 
 	const [insulinOnBoard, setInsulinOnBoard] = React.useState("");
 	const [bloodGlucose, setBloodGlucose] = React.useState("");
@@ -62,8 +69,8 @@ export const GoingLowCarbCalculator = () => {
 				return defaultValue.toString();
 			}
 
-			return getNumericValueFromInput(value).toString();;
-		}
+			return getNumericValueFromInput(value).toString();
+		};
 
 		if (cookies.get("cookieConsent") !== true) {
 			return;
@@ -116,7 +123,8 @@ export const GoingLowCarbCalculator = () => {
 			return "...";
 		}
 
-		const targetBloodGlucoseValue = getNumericValueFromInput(targetBloodGlucose);
+		const targetBloodGlucoseValue =
+			getNumericValueFromInput(targetBloodGlucose);
 		const bloodGlucoseValue = getNumericValueFromInput(bloodGlucose);
 		const correctionFactorValue = getNumericValueFromInput(correctionFactor);
 		const insulinOnBoardValue = getNumericValueFromInput(insulinOnBoard);
@@ -133,204 +141,206 @@ export const GoingLowCarbCalculator = () => {
 
 	return (
 		<Sheet>
-			<Typography level="h2" textAlign="center">
-				Long-term Settings
-				<Tooltip title="Reset to Default Settings" variant="plain">
-					<Button
-						variant="plain"
-						sx={{ padding: "10px", margin: "0px 10px" }}
-						onClick={() => {
-							setCorrectionFactor(defaultCorrectionFactor.toString());
-							setBolusRatio(defaultBolusRatio.toString());
-							setTargetBloodGlucose(defaultTargetBloodGlucose.toString());
-						}}
-					>
-						<RestartAltIcon />
-					</Button>
-				</Tooltip>
-			</Typography>
-			<br />
+			<Card sx={{ maxWidth: '1000px', margin: 'auto' }}>
+				<Typography level="h2" textAlign="center">
+					Long-term Settings
+					<Tooltip title="Reset to Default Settings" variant="plain">
+						<Button
+							variant="plain"
+							sx={{ padding: "10px", margin: "0px 10px" }}
+							onClick={() => {
+								setCorrectionFactor(defaultCorrectionFactor.toString());
+								setBolusRatio(defaultBolusRatio.toString());
+								setTargetBloodGlucose(defaultTargetBloodGlucose.toString());
+							}}
+						>
+							<RestartAltIcon />
+						</Button>
+					</Tooltip>
+				</Typography>
+				<br />
 
-			<Grid container spacing={2} sx={{ justifyContent: "center" }}>
-				<Grid xs={4}>
-					<Card>
-						<CardContent>
-							<Typography
-								level="body-lg"
-								endDecorator={
-									<HelpIconWithTooltip helpText="Correction Factor: The amount your blood glucose level would decrease from one unit of insulin under normal circumstances." />
-								}
-							>
-								Correction factor
-							</Typography>
-							<Typography>
-								1u per{" "}
-								<b>
-									<Input
-										placeholder="..."
-										value={correctionFactor}
-										type="text"
-										size="sm"
-										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-											handleNumericInput(
-												event.target.value,
-												setCorrectionFactor
-											)
-										}
-										sx={{
-											display: "inline-block",
-											minWidth: "3em",
-											maxWidth: "3em",
-											minHeight: "3.5ex",
-										}}
-									/>
-								</b>{" "}
-								BG
-							</Typography>
-						</CardContent>
-					</Card>
+				<Grid container spacing={2} sx={{ justifyContent: "center" }}>
+					<Grid xs={4}>
+						<Card>
+							<CardContent>
+								<Typography
+									level="h4"
+									endDecorator={
+										<HelpIconWithTooltip helpText="Correction Factor: The amount your blood glucose level would decrease from one unit of insulin under normal circumstances." />
+									}
+								>
+									Correction factor
+								</Typography>
+								<Typography level="body-lg">
+									1u per{" "}
+									<b>
+										<Input
+											placeholder="..."
+											value={correctionFactor}
+											type="text"
+											size="lg"
+											onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+												handleNumericInput(
+													event.target.value,
+													setCorrectionFactor
+												)
+											}
+											sx={{
+												display: "inline-block",
+												minWidth: "3em",
+												maxWidth: "3em",
+												minHeight: "3.5ex",
+											}}
+										/>
+									</b>{" "}
+									BG
+								</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+					<Grid xs={4}>
+						<Card>
+							<CardContent>
+								<Typography
+									level="h4"
+									endDecorator={
+										<HelpIconWithTooltip helpText="Bolus Ratio: The number of grams of carbs that are metabolized by one unit of insulin under normal circumstances." />
+									}
+								>
+									Bolus ratio
+								</Typography>
+								<Typography level="body-lg">
+									1u per{" "}
+									<b>
+										<Input
+											placeholder="..."
+											value={bolusRatio}
+											type="text"
+											size="lg"
+											onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+												handleNumericInput(event.target.value, setBolusRatio)
+											}
+											sx={{
+												display: "inline-block",
+												minWidth: "2em",
+												maxWidth: "2.5em",
+												minHeight: "3.5ex",
+											}}
+										/>
+									</b>
+									g
+								</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+					<Grid xs={4}>
+						<Card>
+							<CardContent>
+								<Typography
+									level="h4"
+									endDecorator={
+										<HelpIconWithTooltip helpText="Target Blood Glucose: The desired level of blood glucose to maintain good health while reducing the likelihood of a swing to a dangerously low level." />
+									}
+								>
+									Target BG
+								</Typography>
+								<Typography level="body-lg">
+									<b>
+										<Input
+											placeholder="enter target BG..."
+											value={targetBloodGlucose}
+											type="text"
+											size="lg"
+											onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+												handleNumericInput(
+													event.target.value,
+													setTargetBloodGlucose
+												)
+											}
+											sx={{
+												display: "inline-block",
+												minHeight: "3.5ex",
+											}}
+										/>
+									</b>
+								</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
 				</Grid>
-				<Grid xs={4}>
-					<Card>
-						<CardContent>
-							<Typography
-								level="body-lg"
-								endDecorator={
-									<HelpIconWithTooltip helpText="Bolus Ratio: The number of grams of carbs that are metabolized by one unit of insulin under normal circumstances." />
-								}
-							>
-								Bolus ratio
-							</Typography>
-							<Typography>
-								1u per{" "}
-								<b>
-									<Input
-										placeholder="..."
-										value={bolusRatio}
-										type="text"
-										size="sm"
-										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-											handleNumericInput(event.target.value, setBolusRatio)
-										}
-										sx={{
-											display: "inline-block",
-											minWidth: "2em",
-											maxWidth: "2.5em",
-											minHeight: "3.5ex",
-										}}
-									/>
-								</b>
-								g
-							</Typography>
-						</CardContent>
-					</Card>
+				<br />
+				<Typography level="h2" textAlign="center">
+					Variables
+				</Typography>
+				<br />
+				<Grid container spacing={2} sx={{ justifyContent: "center" }}>
+					<Grid xs={4}>
+						<Card>
+							<CardContent>
+								<Typography
+									level="h4"
+									endDecorator={
+										<HelpIconWithTooltip helpText="Insulin On Board (IOB): The amount of insulin currently in your blood stream as reported by your connected device." />
+									}
+								>
+									IOB
+								</Typography>
+								<Input
+									placeholder="enter IOB..."
+									value={insulinOnBoard}
+									type="text"
+									size="lg"
+									onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+										handleNumericInput(event.target.value, setInsulinOnBoard)
+									}
+								/>
+							</CardContent>
+						</Card>
+					</Grid>
+					<Grid xs={4}>
+						<Card>
+							<CardContent>
+								<Typography
+									level="h4"
+									endDecorator={
+										<HelpIconWithTooltip helpText="Blood Glucose Level (BG): The amount of glucose in your blood stream measured in mg/dl." />
+									}
+								>
+									BG
+								</Typography>
+								<Input
+									placeholder="enter BG..."
+									value={bloodGlucose}
+									type="text"
+									size="lg"
+									onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+										handleNumericInput(event.target.value, setBloodGlucose)
+									}
+								/>
+							</CardContent>
+						</Card>
+					</Grid>
 				</Grid>
-				<Grid xs={4}>
-					<Card>
-						<CardContent>
-							<Typography
-								level="body-lg"
-								endDecorator={
-									<HelpIconWithTooltip helpText="Target Blood Glucose: The desired level of blood glucose to maintain good health while reducing the likelihood of a swing to a dangerously low level." />
-								}
-							>
-								Target BG
-							</Typography>
-							<Typography>
-								<b>
-									<Input
-										placeholder="enter target BG..."
-										value={targetBloodGlucose}
-										type="text"
-										size="sm"
-										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-											handleNumericInput(
-												event.target.value,
-												setTargetBloodGlucose
-											)
-										}
-										sx={{
-											display: "inline-block",
-											minHeight: "3.5ex",
-										}}
-									/>
-								</b>
-							</Typography>
-						</CardContent>
-					</Card>
+				<br />
+				<Typography level="h2" textAlign="center">
+					Result
+				</Typography>
+				<Grid container spacing={2} sx={{ justifyContent: "center" }}>
+					<Grid xs={6}>
+						<Card sx={{ margin: "auto" }}>
+							<CardContent>
+								<Typography level="h4">
+									Grams of carbs needed to reach target:
+								</Typography>
+								<Typography sx={{ margin: "auto" }} fontSize={60}>
+									{getGramsNeededToReachTarget()}
+								</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
 				</Grid>
-			</Grid>
-			<br />
-			<Typography level="h2" textAlign="center">
-				Variables
-			</Typography>
-			<br />
-			<Grid container spacing={2} sx={{ justifyContent: "center" }}>
-				<Grid xs={4}>
-					<Card>
-						<CardContent>
-							<Typography
-								level="body-lg"
-								endDecorator={
-									<HelpIconWithTooltip helpText="Insulin On Board (IOB): The amount of insulin currently in your blood stream as reported by your connected device." />
-								}
-							>
-								IOB
-							</Typography>
-							<Input
-								placeholder="enter IOB..."
-								value={insulinOnBoard}
-								type="text"
-								size="lg"
-								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-									handleNumericInput(event.target.value, setInsulinOnBoard)
-								}
-							/>
-						</CardContent>
-					</Card>
-				</Grid>
-				<Grid xs={4}>
-					<Card>
-						<CardContent>
-							<Typography
-								level="body-lg"
-								endDecorator={
-									<HelpIconWithTooltip helpText="Blood Glucose Level (BG): The amount of glucose in your blood stream measured in mg/dl." />
-								}
-							>
-								BG
-							</Typography>
-							<Input
-								placeholder="enter BG..."
-								value={bloodGlucose}
-								type="text"
-								size="lg"
-								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-									handleNumericInput(event.target.value, setBloodGlucose)
-								}
-							/>
-						</CardContent>
-					</Card>
-				</Grid>
-			</Grid>
-			<br />
-			<Typography level="h2" textAlign="center">
-				Result
-			</Typography>
-			<Grid container spacing={2} sx={{ justifyContent: "center" }}>
-				<Grid xs={6}>
-					<Card sx={{ margin: "auto" }}>
-						<CardContent>
-							<Typography level="body-lg">
-								Grams of carbs needed to reach target:
-							</Typography>
-							<Typography sx={{ margin: "auto" }} fontSize={60}>
-								{getGramsNeededToReachTarget()}
-							</Typography>
-						</CardContent>
-					</Card>
-				</Grid>
-			</Grid>
+			</Card>
 			<br />
 			<Sheet
 				sx={{
@@ -346,6 +356,6 @@ export const GoingLowCarbCalculator = () => {
 			</Sheet>
 		</Sheet>
 	);
-}
+};
 
 export default GoingLowCarbCalculator;
