@@ -140,7 +140,7 @@ export const GoingLowCarbCalculator = () => {
 	};
 
 	return (
-		<Sheet>
+		<Sheet sx={{ overflowX: 'hidden' }}>
 			<Card sx={{ maxWidth: '1000px', margin: 'auto' }}>
 				<Typography level="h2" textAlign="center">
 					Long-term Settings
@@ -261,6 +261,7 @@ export const GoingLowCarbCalculator = () => {
 											sx={{
 												display: "inline-block",
 												minHeight: "3.5ex",
+												maxWidth: "5em"
 											}}
 										/>
 									</b>
